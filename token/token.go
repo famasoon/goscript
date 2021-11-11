@@ -11,21 +11,35 @@ const (
 	ILLEGAL = "ILLEGAL"
 	EOF     = "EOF"
 
-	INDENT = "INDENT"
-	INT    = "INT"
+	IDENT = "IDENT"
+	INT   = "INT"
 
-	ASSIGN = "="
-	PLUS   = "+"
+	ASSIGN   = "="
+	PLUS     = "+"
+	MINUS    = "-"
+	BANG     = "!"
+	ASTERISK = "*"
+	SLASH    = "/"
 
-	COMMA      = ","
-	SEMMICOLON = ";"
+	LT = "<"
+	GT = ">"
+
+	EQ     = "=="
+	NOT_EQ = "!="
+
+	COMMA     = ","
+	SEMICOLON = ";"
 
 	LPAREN = "("
 	RPAREN = ")"
-
 	LBRACE = "{"
 	RBRACE = "}"
 
 	FUNCTION = "FUNCTION"
 	LET      = "LET"
+	TRUE     = "TRUE"
+	FALSE    = "FALSE"
+	IF       = "IF"
+	ELSE     = "ELSE"
+	RETURN   = "RETURN"
 )
