@@ -31,11 +31,11 @@ func TestNextToken(t *testing.T) {
 			token := l.NextToken()
 
 			if token.Type != tt.expectedType {
-				t.Errorf("%s: tokenType wrong. expected=%q, got=%q", tt.testName, tt.expectedType, token.Type)
+				t.Errorf("%s: tokenType wrong. expected=%q, got=%q\n", tt.testName, tt.expectedType, token.Type)
 			}
 
 			if token.Literal != tt.expectedLiteral {
-				t.Errorf("%s: tokenLiteral wrong. expected=%q, got=%q", tt.testName, tt.expectedLiteral, token.Literal)
+				t.Errorf("%s: tokenLiteral wrong. expected=%q, got=%q\n", tt.testName, tt.expectedLiteral, token.Literal)
 			}
 		})
 	}
