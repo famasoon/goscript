@@ -55,7 +55,7 @@ func (ls *LetStatement) String() string {
 	var out bytes.Buffer
 
 	out.WriteString(ls.TokenLiteral() + " ")
-	out.WriteString(ls.Value.String())
+	out.WriteString(ls.Name.String())
 	out.WriteString(" = ")
 
 	if ls.Value != nil {
