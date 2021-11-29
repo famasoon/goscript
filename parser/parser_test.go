@@ -293,7 +293,7 @@ func TestParsingInfixExpression(t *testing.T) {
 func testIdentifier(t *testing.T, exp ast.Expression, value string) error {
 	ident, ok := exp.(*ast.Identifier)
 	if !ok {
-		return fmt.Errorf("exp not *ast.Iddentifier. got=%T", exp)
+		return fmt.Errorf("exp not *ast.Identifier. got=%T", exp)
 	}
 
 	if ident.Value != value {
