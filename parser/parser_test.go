@@ -290,6 +290,59 @@ func TestParsingInnfixExpression(t *testing.T) {
 	}
 }
 
+func testIdentifier(t *testing.T, exp ast.Expression, value string) error {
+	ident, ok := exp.(*ast.Identifier)
+	if !ok {
+		return fmt.Errorf("exp not *ast.Iddentifier. got=%T", exp)
+	}
+
+	if ident.Value != value {
+		return fmt.Errorf("ident.Value not %s. got=%s", value, ident.Value)
+	}
+
+	if ident.TokenLiteral() != value {
+		return fmt.Errorf("ident.TokenLiteral not %s. got=%s", value, ident.TokenLiteral())
+	}
+
+	return nil
+}
+
+func testLiteralExpression(t *testing.T, exp ast.Expression, expected interface{}) error {
+	switch v := expected.(type) {
+	case int:
+		return testIntegerLiteral(t, exp, int64(v))
+	case int64:
+		return testIntegerLiteral(t, exp, v)
+	case string:
+		return testIdentifier(t, exp, v)
+	}
+
+	return fmt.Errorf("type of exp not handled. got=%T", exp)
+}
+
+func testInfixExpression(t *testing.T, exp ast.Expression, left interface{}, operator string, right interface{}) error {
+	opExp, ok := exp.(*ast.InfixExpression)
+	if !ok {
+		return fmt.Errorf("exp is not ast.InfixExpresxpression. got=%TT(%s)", exp, exp)
+	}
+
+	err := testLiteralExpression(t, opExp, left)
+	if err != nil {
+		return err
+	}
+
+	if opExp.Operator != operator {
+		return fmt.Errorf("exp.Operator is not '%s'. got=%q", operator, opExp.Operator)
+	}
+
+	err = testLiteralExpression(t, opExp, right)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 /* func TestOperatorPrecedenceParsing(t *testing.T) {
 	tests := []struct {
 		testName string
@@ -432,4 +485,4 @@ func TestParsingInnfixExpression(t *testing.T) {
 		})
 	}
 }
- */
+*/
