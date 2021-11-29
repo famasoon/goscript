@@ -234,7 +234,7 @@ func testIntegerLiteral(t *testing.T, il ast.Expression, value int64) error {
 	return nil
 }
 
-func TestParsingInnfixExpression(t *testing.T) {
+func TestParsingInfixExpression(t *testing.T) {
 	infixTests := []struct {
 		testName   string
 		input      string
