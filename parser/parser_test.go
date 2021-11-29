@@ -325,7 +325,7 @@ func testLiteralExpression(t *testing.T, exp ast.Expression, expected interface{
 func testInfixExpression(t *testing.T, exp ast.Expression, left interface{}, operator string, right interface{}) error {
 	opExp, ok := exp.(*ast.InfixExpression)
 	if !ok {
-		return fmt.Errorf("exp is not ast.InfixExpresxpression. got=%TT(%s)", exp, exp)
+		return fmt.Errorf("exp is not ast.Expression. got=%TT(%s)", exp, exp)
 	}
 
 	err := testLiteralExpression(t, opExp, left)
