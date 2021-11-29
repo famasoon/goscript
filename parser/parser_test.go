@@ -343,6 +343,56 @@ func testInfixExpression(t *testing.T, exp ast.Expression, left interface{}, ope
 	return nil
 }
 
+func TestBooleanExpression(t *testing.T) {
+	tests := []struct {
+		testName string
+		input    string
+		expected bool
+	}{
+		{"true case", "true", true},
+		{"false case", "false", false},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.testName, func(t *testing.T) {
+			p := New(lexer.New(tt.input))
+			program := p.ParseProgram()
+			checkParserErrors(t, p)
+
+			l := len(program.Statements)
+			if l != 1 {
+				t.Fatalf("program has not enough statements. got=%d", l)
+			}
+
+			stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
+			if !ok {
+				t.Fatalf("program.Statements[0] is not *ast.ExpressionStatement. got=%T",
+					program.Statements[0])
+			}
+
+			err := testBooleanLiteral(t, stmt.Expression, tt.expected)
+			if err != nil {
+				t.Errorf("%T", err)
+			}
+		})
+	}
+}
+
+func testBooleanLiteral(t *testing.T, expr ast.Expression, value bool) error {
+	b, ok := expr.(*ast.Boolean)
+	if !ok {
+		return fmt.Errorf("b not *ast.Boolean. got=%T", expr)
+	}
+	if b.Value != value {
+		return fmt.Errorf("b.Value not %t. got=%t", value, b.Value)
+	}
+	if b.TokenLiteral() != fmt.Sprintf("%t", value) {
+		return fmt.Errorf("b.TokenLiteral() not %t. got=%s", value, b.TokenLiteral())
+	}
+
+	return nil
+}
+
 /* func TestOperatorPrecedenceParsing(t *testing.T) {
 	tests := []struct {
 		testName string
