@@ -238,9 +238,9 @@ func TestParsingInfixExpression(t *testing.T) {
 	infixTests := []struct {
 		testName   string
 		input      string
-		leftValue  int64
+		leftValue  interface{}
 		operator   string
-		rightValue int64
+		rightValue interface{}
 	}{
 		{"5 + 5 case", "5 + 5", 5, "+", 5},
 		{"5 - 5 case", "5 - 5", 5, "-", 5},
@@ -250,6 +250,9 @@ func TestParsingInfixExpression(t *testing.T) {
 		{"5 < 5 case", "5 < 5", 5, "<", 5},
 		{"5 == 5 case", "5 == 5", 5, "==", 5},
 		{"5 != 5 case", "5 != 5", 5, "!=", 5},
+		{"true == true case", "true == true", true, "==", true},
+		{"true != false case", "true != false", true, "!=", false},
+		{"false == false case", "false == false", false, "==", false},
 	}
 
 	for _, tt := range infixTests {
@@ -268,21 +271,7 @@ func TestParsingInfixExpression(t *testing.T) {
 				t.Fatalf("program.Statements[0] is not ast.ExpressionStatement. got=%T", program.Statements[0])
 			}
 
-			exp, ok := stmt.Expression.(*ast.InfixExpression)
-			if !ok {
-				t.Fatalf("stmt is not ast.InfixExpression. go=%T", stmt.Expression)
-			}
-
-			err := testIntegerLiteral(t, exp.Left, tt.leftValue)
-			if err != nil {
-				t.Errorf("[Error] %v", err)
-			}
-
-			if exp.Operator != tt.operator {
-				t.Errorf("exp.Operator is not '%s'. got=%s", tt.operator, exp.Operator)
-			}
-
-			err = testIntegerLiteral(t, exp.Right, tt.rightValue)
+			err := testInfixExpression(t, stmt.Expression, tt.leftValue, tt.operator, tt.rightValue)
 			if err != nil {
 				t.Errorf("[Error] %v", err)
 			}
@@ -328,7 +317,7 @@ func testInfixExpression(t *testing.T, exp ast.Expression, left interface{}, ope
 		return fmt.Errorf("exp is not ast.Expression. got=%T(%s)", exp, exp)
 	}
 
-	err := testLiteralExpression(t, opExp, left)
+	err := testLiteralExpression(t, opExp.Left, left)
 	if err != nil {
 		return err
 	}
@@ -337,7 +326,7 @@ func testInfixExpression(t *testing.T, exp ast.Expression, left interface{}, ope
 		return fmt.Errorf("exp.Operator is not '%s'. got=%q", operator, opExp.Operator)
 	}
 
-	err = testLiteralExpression(t, opExp, right)
+	err = testLiteralExpression(t, opExp.Right, right)
 	if err != nil {
 		return err
 	}
