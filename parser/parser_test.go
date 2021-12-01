@@ -533,6 +533,41 @@ func TestFunctionLiteralParsing(t *testing.T) {
 	}
 }
 
+func TestFunctionParameterParsing(t *testing.T) {
+	tests := []struct {
+		testName string
+		input    string
+		expected []string
+	}{
+		{"fn() {} case", "fn() {}", []string{}},
+		{"fn(x) {}; case", "fn(x) {};", []string{"x"}},
+		{"fn(x, y, z) {}; case", "fn(x, y, z) {};", []string{"x", "y", "z"}},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.testName, func(t *testing.T) {
+			l := lexer.New(tt.input)
+			p := New(l)
+			program := p.ParseProgram()
+			checkParserErrors(t, p)
+
+			stmt := program.Statements[0].(*ast.ExpressionStatement)
+			function := stmt.Expression.(*ast.FunctionLiteral)
+
+			if len(function.Parameters) != len(tt.expected) {
+				t.Errorf("length parameters wrong. want=%d, got=%d", len(tt.expected), len(function.Parameters))
+			}
+
+			for i, ident := range tt.expected {
+				err := testLiteralExpression(t, function.Parameters[i], ident)
+				if err != nil {
+					t.Errorf("[Error] %v", err)
+				}
+			}
+		})
+	}
+}
+
 /* func TestOperatorPrecedenceParsing(t *testing.T) {
 	tests := []struct {
 		testName string
