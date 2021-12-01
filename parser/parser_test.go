@@ -527,7 +527,7 @@ func TestFunctionLiteralParsing(t *testing.T) {
 		t.Fatalf("function body stmt is not ast.ExpressionStatement. got=%T", function.Body.Statements[0])
 	}
 
-	err = testInfixExpression(t, bodyStmt.Expression, "x", "<", "y")
+	err = testInfixExpression(t, bodyStmt.Expression, "x", "+", "y")
 	if err != nil {
 		t.Errorf("[Error] %v", err)
 	}
