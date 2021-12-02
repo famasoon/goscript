@@ -67,6 +67,44 @@ func testLetStatement(t *testing.T, s ast.Statement, name string) error {
 	return nil
 }
 
+func TestLetStatements2(t *testing.T) {
+	tests := []struct {
+		testName           string
+		input              string
+		expectedIdentifier string
+		expectedValue      interface{}
+	}{
+		{"let x = 5; case", "let x = 5;", "x", 5},
+		{"let y = true; case", "let y = true;", "y", true},
+		{"let foobar = y; case", "let foobar = y;", "foobar", "y"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.testName, func(t *testing.T) {
+			l := lexer.New(tt.input)
+			p := New(l)
+
+			program := p.ParseProgram()
+			checkParserErrors(t, p)
+			if program == nil {
+				t.Fatalf("ParseProgram() returned nil!\n")
+			}
+
+			stmt := program.Statements[0]
+			err := testLetStatement(t, stmt, tt.expectedIdentifier)
+			if err != nil {
+				t.Errorf("[Error] %v", err)
+			}
+
+			val := stmt.(*ast.LetStatement).Value
+			err = testLiteralExpression(t, val, tt.expectedValue)
+			if err != nil {
+				t.Errorf("[Error] %v", err)
+			}
+		})
+	}
+}
+
 func TestReturnStatements(t *testing.T) {
 	input := `
 return 5;
