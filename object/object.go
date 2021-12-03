@@ -20,7 +20,7 @@ type Integer struct {
 }
 
 func (i *Integer) Type() string    { return INTEGER_OBJ }
-func (i *Integer) Inspect() string { return fmt.Sprintf("%d,", i.Value) }
+func (i *Integer) Inspect() string { return fmt.Sprintf("%d", i.Value) }
 
 type Boolean struct {
 	Value bool
