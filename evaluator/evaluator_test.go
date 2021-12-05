@@ -81,3 +81,28 @@ func testBooleanObject(obj object.Object, expected bool) error {
 
 	return nil
 }
+
+func TestBangOperator(t *testing.T) {
+	tests := []struct {
+		testName string
+		input    string
+		expected bool
+	}{
+		{"!true case", "!true", false},
+		{"!false case", "!false", true},
+		{"!5 case", "!5", false},
+		{"!!true case", "!!true", true},
+		{"!!false case", "!!false", false},
+		{"!!5 case", "!!5", true},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.testName, func(t *testing.T) {
+			evaluated := testEval(tt.input)
+			err := testBooleanObject(evaluated, tt.expected)
+			if err != nil {
+				t.Errorf("[ERROR] %v", err)
+			}
+		})
+	}
+}
