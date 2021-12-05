@@ -105,7 +105,7 @@ func evalIntegerInfixExpression(operator string, left, right object.Object) obje
 	case "*":
 		return &object.Integer{Value: leftValue * rightValue}
 	case "/":
-		return &object.Integer{Value: leftValue * rightValue}
+		return &object.Integer{Value: leftValue / rightValue}
 	default:
 		return NULL
 	}
