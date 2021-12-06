@@ -51,7 +51,6 @@ type LetStatement struct {
 
 func (ls *LetStatement) statementNode()       {}
 func (ls *LetStatement) TokenLiteral() string { return ls.Token.Literal }
-
 func (ls *LetStatement) String() string {
 	var out bytes.Buffer
 
@@ -75,7 +74,6 @@ type Identifier struct {
 
 func (i *Identifier) expressionNode()      {}
 func (i *Identifier) TokenLiteral() string { return i.Token.Literal }
-
 func (i *Identifier) String() string { return i.Value }
 
 type ReturnStatement struct {
@@ -85,7 +83,6 @@ type ReturnStatement struct {
 
 func (rs *ReturnStatement) statementNode()       {}
 func (rs *ReturnStatement) TokenLiteral() string { return rs.Token.Literal }
-
 func (rs *ReturnStatement) String() string {
 	var out bytes.Buffer
 
@@ -107,12 +104,10 @@ type ExpressionStatement struct {
 
 func (es *ExpressionStatement) statementNode()       {}
 func (es *ExpressionStatement) TokenLiteral() string { return es.Token.Literal }
-
 func (es *ExpressionStatement) String() string {
 	if es.Expression != nil {
 		return es.Expression.String()
 	}
-
 	return ""
 }
 
@@ -187,13 +182,13 @@ func (ie *IfExpression) String() string {
 	var out bytes.Buffer
 
 	out.WriteString("if")
-	out.WriteString("ie.condition.String()")
+	out.WriteString(ie.Condition.String())
 	out.WriteString(" ")
-	out.WriteString("ie.Consequence.String()")
+	out.WriteString(ie.Consequence.String())
 
 	if ie.Alternative != nil {
 		out.WriteString("else ")
-		out.WriteString("ie.Alternative.String()")
+		out.WriteString(ie.Alternative.String())
 	}
 
 	return out.String()
@@ -204,7 +199,7 @@ type BlockStatement struct {
 	Statements []Statement
 }
 
-func (bs *BlockStatement) expressionNode()      {}
+func (bs *BlockStatement) statementNode()      {}
 func (bs *BlockStatement) TokenLiteral() string { return bs.Token.Literal }
 func (bs *BlockStatement) String() string {
 	var out bytes.Buffer
