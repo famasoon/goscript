@@ -23,7 +23,7 @@ func Eval(node ast.Node) object.Object {
 		return nativeBoolean(node.Value)
 	case *ast.PrefixExpression:
 		right := Eval(node.Right)
-		return evalPrerefixExpression(node.Operator, right)
+		return evalPrefixExpression(node.Operator, right)
 	case *ast.InfixExpression:
 		left := Eval(node.Left)
 		right := Eval(node.Right)
@@ -51,12 +51,12 @@ func nativeBoolean(input bool) *object.Boolean {
 	return FALSE
 }
 
-func evalPrerefixExpression(operator string, right object.Object) object.Object {
+func evalPrefixExpression(operator string, right object.Object) object.Object {
 	switch operator {
 	case "!":
 		return evalBangOperatorExpression(right)
 	case "-":
-		return evalMinusPrefirefixOperatorExpression(right)
+		return evalMinusPrefixOperatorExpression(right)
 	default:
 		return NULL
 	}
@@ -75,7 +75,7 @@ func evalBangOperatorExpression(right object.Object) object.Object {
 	}
 }
 
-func evalMinusPrefirefixOperatorExpression(right object.Object) object.Object {
+func evalMinusPrefixOperatorExpression(right object.Object) object.Object {
 	if right.Type() != object.INTEGER_OBJ {
 		return NULL
 	}
