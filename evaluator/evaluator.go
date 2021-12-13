@@ -153,7 +153,7 @@ func evalProgram(program *ast.Program) object.Object {
 
 		returnValue, ok := result.(*object.ReturnValue)
 		if ok {
-			return returnValue
+			return returnValue.Value
 		}
 	}
 
