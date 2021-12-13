@@ -178,3 +178,27 @@ func testNullObject(obj object.Object) error {
 	}
 	return nil
 }
+
+func TestReturnStatements(t *testing.T) {
+	tests := []struct {
+		testName string
+		input    string
+		expected int64
+	}{
+		{"return 10;", "return 10;", 10},
+		{"return 10; 9;", "return 10; 9;", 10},
+		{"return 2 * 5; 9;", "return 2 * 5; 9;", 10},
+		{"9; return 2 * 5; 9;", "9; return 2 * 5; 9;", 10},
+		{"if (10 > 1) { return 10; }", "if (10 > 1) { return 10; }", 10},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.testName, func(t *testing.T) {
+			evaluated := testEval(tt.input)
+			err := testIntegerObject(evaluated, tt.expected)
+			if err != nil {
+				t.Errorf("[ERROR] %v", err)
+			}
+		})
+	}
+}
