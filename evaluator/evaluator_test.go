@@ -289,3 +289,25 @@ if (10 > 1) {
 		})
 	}
 }
+
+func TestLetStatements(t *testing.T) {
+	tests := []struct {
+		testName string
+		input    string
+		expected int64
+	}{
+		{"a case", "let a = 5; a;", 5},
+		{"b case", "let a = 5 * 5; a;", 25},
+		{"ab case", "let a = 5; let b = a; b;", 5},
+		{"abc case", "let a = 5; let b = a; let c = a + b + 5; c;", 15},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.testName, func(t *testing.T) {
+			err := testIntegerObject(testEval(tt.input), tt.expected)
+			if err != nil {
+				t.Errorf("[ERROR] %v", err)
+			}
+		})
+	}
+}
