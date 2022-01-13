@@ -337,3 +337,27 @@ func TestFunctionObject(t *testing.T) {
 		t.Fatalf("body is not %q. got=%q", expectedBody, fn.Body.String())
 	}
 }
+
+func TestFunctionApplication(t *testing.T) {
+	tests := []struct {
+		testName string
+		input    string
+		expected int64
+	}{
+		{"1st case", "let identity = fn(x) { x; }; identity(5);", 5},
+		{"2nd case", "let identity = fn(x) { return x; }; identity(5);", 5},
+		{"3rd case", "let double = fn(x) { x * 2; }; double(5);", 10},
+		{"4th case", "let add = fn(x, y) { x + y; }; add(5, 5);", 10},
+		{"5th case", "let add = fn(x, y) { x + y; }; add(5 + 5, add(5, 5));", 20},
+		{"6th case", "fn(x) { x; }(5)", 5},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.testName, func(t *testing.T) {
+			err := testIntegerObject(testEval(tt.input), tt.expected)
+			if err != nil {
+				t.Errorf("[ERROR] %v", err)
+			}
+		})
+	}
+}
