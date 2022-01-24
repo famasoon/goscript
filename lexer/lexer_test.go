@@ -21,6 +21,8 @@ func TestNextToken(t *testing.T) {
 	}
 	10 == 10;
 	10 != 9;
+	"foobar"
+	"foo bar"
 	`
 
 	tests := []struct {
@@ -101,7 +103,8 @@ func TestNextToken(t *testing.T) {
 		{"NOT_EQ test case", token.NOT_EQ, "!="},
 		{"INT test case", token.INT, "9"},
 		{"SEMICOLON test case", token.SEMICOLON, ";"},
-		{"Let test case", token.EOF, ""},
+		{"foobar test case", token.STRING, "foobar"},
+		{"foo bar test case", token.STRING, "foo bar"},
 	}
 
 	l := New(input)
