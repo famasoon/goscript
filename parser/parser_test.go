@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestStringLiteralExpression(t testing.T) {
+func TestStringLiteralExpression(t *testing.T) {
 	input := `"hello world";`
 
 	l := lexer.New(input)
