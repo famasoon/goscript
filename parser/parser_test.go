@@ -671,7 +671,7 @@ func TestCallExpressionParsing(t *testing.T) {
 	}
 }
 
-/* func TestOperatorPrecedenceParsing(t *testing.T) {
+func TestOperatorPrecedenceParsing(t *testing.T) {
 	tests := []struct {
 		testName string
 		input    string
@@ -813,4 +813,4 @@ func TestCallExpressionParsing(t *testing.T) {
 		})
 	}
 }
-*/
+
