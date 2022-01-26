@@ -23,6 +23,7 @@ func TestNextToken(t *testing.T) {
 	10 != 9;
 	"foobar"
 	"foo bar"
+	[1, 2];
 	`
 
 	tests := []struct {
@@ -105,6 +106,12 @@ func TestNextToken(t *testing.T) {
 		{"SEMICOLON test case", token.SEMICOLON, ";"},
 		{"foobar test case", token.STRING, "foobar"},
 		{"foo bar test case", token.STRING, "foo bar"},
+		{"[", token.LBRACKET, "["},
+		{"1", token.INT, "1"},
+		{",", token.COMMA, ","},
+		{"2", token.INT, "2"},
+		{"]", token.RBRACKET, "]"},
+		{";", token.SEMICOLON, ";"},
 	}
 
 	l := New(input)
