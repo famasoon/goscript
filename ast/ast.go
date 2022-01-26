@@ -269,14 +269,14 @@ func (ce *CallExpression) String() string {
 	return out.String()
 }
 
-type ArrayList struct {
+type ArrayLiteral struct {
 	Token    token.Token
 	Elements []Expression
 }
 
-func (al *ArrayList) expressionNode()      {}
-func (al *ArrayList) TokenLiteral() string { return al.Token.Literal }
-func (al *ArrayList) String() string {
+func (al *ArrayLiteral) expressionNode()      {}
+func (al *ArrayLiteral) TokenLiteral() string { return al.Token.Literal }
+func (al *ArrayLiteral) String() string {
 	var out bytes.Buffer
 
 	elements := []string{}
