@@ -62,4 +62,5 @@ const (
 	IF       = "IF"
 	ELSE     = "ELSE"
 	RETURN   = "RETURN"
+	COLON = ":"
 )
