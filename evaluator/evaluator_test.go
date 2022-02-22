@@ -579,3 +579,65 @@ func TestHashLiterals(t *testing.T) {
 		}
 	}
 }
+
+func TestHashIndexExpressions(t *testing.T) {
+	tests := []struct {
+		name string
+		input    string
+		expected interface{}
+	}{
+		{
+			`{"foo": 5}["foo"]`,
+			`{"foo": 5}["foo"]`,
+			5,
+		},
+		{
+			`{"foo": 5}["bar"]`,
+			`{"foo": 5}["bar"]`,
+			nil,
+		},
+		{
+			`let key = "foo"; {"foo": 5}[key]`,
+			`let key = "foo"; {"foo": 5}[key]`,
+			5,
+		},
+		{
+			`{}["foo"]`,
+			`{}["foo"]`,
+			nil,
+		},
+		{
+			`{5: 5}[5]`,
+			`{5: 5}[5]`,
+			5,
+		},
+		{
+			`{true: 5}[true]`,
+			`{true: 5}[true]`,
+			5,
+		},
+		{
+			`{false: 5}[false]`,
+			`{false: 5}[false]`,
+			5,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func (t *testing.T)  {
+			evaluated := testEval(tt.input)
+			integer, ok := tt.expected.(int)
+			if ok {
+				err := testIntegerObject(evaluated, int64(integer))
+				if err != nil {
+					t.Errorf("[ERROR] %v\n", err)
+				}
+			} else {
+				err := testNullObject(evaluated)
+				if err != nil {
+					t.Errorf("[ERROR] %v\n", err)
+				}
+			}
+		})
+	}
+}
