@@ -896,3 +896,42 @@ func TestParsingIndexExpression(t *testing.T) {
 		t.Errorf("not 1+1 %v", indexExp.Index)
 	}
 }
+
+func TestParsingHashLiteralsStringKeys(t *testing.T) {
+	input := `{"one": 1, "two": 2, "three": 3}`
+
+	l := lexer.New(input)
+	p := New(l)
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+
+	stmt := program.Statements[0].(*ast.ExpressionStatement)
+	hash, ok := stmt.Expression.(*ast.HashLiteral)
+	if !ok {
+		t.Fatalf("exp is not ast.HashLiteral. got=%T", stmt.Expression)
+	}
+
+	expected := map[string]int64{
+		"one":   1,
+		"two":   2,
+		"three": 3,
+	}
+
+	if len(hash.Pairs) != len(expected) {
+		t.Errorf("hash.Pairs has wrong length. got=%d", len(hash.Pairs))
+	}
+
+	for key, value := range hash.Pairs {
+		literal, ok := key.(*ast.StringLiteral)
+		if !ok {
+			t.Errorf("key is not ast.StringLiteral. got=%T", key)
+			continue
+		}
+
+		expectedValue := expected[literal.String()]
+		err := testIntegerLiteral(t, value, expectedValue)
+		if err != nil {
+			t.Errorf("[ERROR] %v", err)
+		}
+	}
+}
